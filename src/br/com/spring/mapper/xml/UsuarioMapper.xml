@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='br.com.spring.mapper.object.UsuarioMapper'>
+
+	<!-- Instead of referencing Fully Qualified Class Names we can register aliases in mybatis-config.xml and use Alias names. -->
+	<resultMap type='Usuario' id='UsuarioResult'>
+		<id property='id' column='id'/>
+		<result property='username' column='username'/>
+		<result property='senha' column='senha'/>
+		<result property='nome' column='nome'/>
+		<result property='sobrenome' column='sobrenome'/>
+		<result property='excluido' column='flg_excluido'/>
+	</resultMap>
+
+	<select id="fixSerialTable" resultType="long">
+		SELECT setval('public.usuario_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM usuario), false);
+	</select>
+
+	<select id='getUsuarioPorId' parameterType='long' resultMap="UsuarioResult">
+		SELECT
+			*
+		FROM
+			usuario
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id='getListUsuarios' resultMap='UsuarioResult'>
+		SELECT DISTINCT ON(id)
+			*
+		FROM
+			usuario
+	</select>
+
+	<insert id='insertUsuario' parameterType='Usuario' useGeneratedKeys='true' keyProperty='id'>
+		<selectKey resultType="long" order="AFTER" keyProperty="id">
+			SELECT COALESCE(MAX(id), 1) FROM usuario;
+		</selectKey>
+		INSERT INTO	usuario (
+			username,
+			senha,
+			nome,
+			sobrenome
+		) VALUES (
+			#{username},
+			#{senha},
+			#{nome},
+			#{sobrenome}
+		)
+	</insert>
+
+	<update id='updateUsuario' parameterType='Usuario'>
+		UPDATE
+			usuario
+		SET
+			senha = #{senha},
+			nome = #{nome},
+			sobrenome = #{sobrenome}
+		WHERE
+			id = #{id}
+	</update>
+
+	<delete id='deleteUsuario' parameterType='long'>
+		DELETE FROM
+			usuario
+		WHERE
+			id = #{id}
+	</delete>
+</mapper>

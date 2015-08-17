@@ -1,0 +1,127 @@
+/* TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE | TEMPLATE */
+.a-clean {
+	text-decoration: none;
+	color: black;
+	display: block;
+}
+.hide {
+	display: none;
+}
+.no-padding, .spaceless {
+	padding: 0px 0px 0px 0px!important;
+}
+.no-border, .spaceless {
+	border: 0px 0px 0px 0px!important;
+}
+.no-margin, .spaceless {
+	margin: 0px 0px 0px 0px!important;
+}
+/* MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE | MAIN STYLE */
+body {
+	font-size: 12pt;
+	white-space: nowrap;
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+.panel {
+	display: block;
+	border: 1px solid #A8A8A8;
+	border-radius: 3px;
+}
+header, footer {
+/* 	color: white; */
+	background-color: #DDD;
+	border: 1px solid #A8A8A8;
+	border-radius: 3px;
+	padding: 5px 5px 5px 5px;
+	font-weight: bolder;
+	font-family: Arial,sans-serif;
+}
+header {
+	margin: 0px 0px 5px 0px;
+	font-size: 14pt;
+}
+footer {
+	margin: 5px 0px 0px 0px;
+	font-size: 10pt;
+}
+.header {
+	display: block;
+	margin: 0px 0px 10px 0px;
+	font-size: 15pt;
+	width: 99%;
+	border: 1px solid #A8A8A8;
+	border-radius: 3px;
+}
+th {
+	border: 2px solid #A8A8A8;
+	padding: 2px 5px 2px 5px;
+	font-family: Arial,sans-serif;
+	font-weight: bold;
+}
+table {
+	border: 2px solid #A8A8A8;
+	border-collapse: collapse;
+	padding: 0px 0px 0px 0px;
+	margin: 1px 1px 1px 1px;
+}
+td {
+	border: 1px solid #A8A8A8;
+	padding: 2px 5px 2px 5px;
+	font-family: Arial,sans-serif;
+}
+.sem_borda, .sem_borda tr, .sem_borda td {
+	border: none;
+}
+.icon {
+	width: 25px!important;
+	max-width: 25px;
+	min-width: 25px;
+	height: 25px!important;
+	max-height: 25px;
+	min-height: 25px;
+}
+.error {
+	color: red;
+}
+.hidden {
+	color: transparent;
+	visibility: hidden;
+	display: none;
+	text-decoration: none;
+}
+
+.pos-1 { vertical-align: bottom; text-align: left;   }
+.pos-2 { vertical-align: bottom; text-align: center; }
+.pos-3 { vertical-align: bottom; text-align: right;  }
+.pos-4 { vertical-align: middle; text-align: left;   }
+.pos-5 { vertical-align: middle; text-align: center; }
+.pos-6 { vertical-align: middle; text-align: right;  }
+.pos-7 { vertical-align: top;    text-align: left;   }
+.pos-8 { vertical-align: top;    text-align: center; }
+.pos-9 { vertical-align: top;    text-align: right;  }
+
+.y-top { vertical-align: top; }
+.y-mid { vertical-align: middle; }
+.y-bot { vertical-align: bottom; }
+
+.x-left { text-align: left; }
+.x-center { text-align: center; }
+.x-right { text-align: right; }
+
+.col-10 { width: 10%; }
+.col-20 { width: 20%; }
+.col-25 { width: 25%; }
+.col-30 { width: 30%; }
+.col-33 { width: 33%; }
+.col-40 { width: 40%; }
+.col-50 { width: 50%; }
+.col-60 { width: 60%; }
+.col-66 { width: 66%; }
+.col-70 { width: 70%; }
+.col-80 { width: 80%; }
+.col-90 { width: 90%; }
+.col-99 { width: 99%; }

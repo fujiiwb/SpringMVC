@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='br.com.spring.mapper.object.CredencialMapper'>
+
+	<!-- Instead of referencing Fully Qualified Class Names we can register aliases in mybatis-config.xml and use Alias names. -->
+	<resultMap type='Credencial' id='CredencialResult'>
+		<id property='id' column='id'/>
+		<result property='login' column='login'/>
+		<result property='senha' column='senha'/>
+		<result property='observacao' column='observacao'/>
+		<result property='excluido' column='flg_excluido'/>
+		<association property='sistema' column="sis_id" resultMap='SistemaResult'/>
+		<association property='usuario' column="usu_id" resultMap='UsuarioResult'/>
+	</resultMap>
+
+	<resultMap type='Sistema' id='SistemaResult'>
+		<id property='id' column='id'/>
+		<result property='nome' column='nome'/>
+		<result property='observacao' column='observacao'/>
+		<result property='excluido' column='flg_excluido'/>
+	</resultMap>
+
+	<resultMap type='Usuario' id='UsuarioResult'>
+		<id property='id' column='id'/>
+		<result property='username' column='username'/>
+		<result property='senha' column='senha'/>
+		<result property='nome' column='nome'/>
+		<result property='sobrenome' column='sobrenome'/>
+		<result property='observacao' column='observacao'/>
+		<result property='excluido' column='flg_excluido'/>
+	</resultMap>
+
+	<select id="fixSerialTable" resultType="long">
+		SELECT setval('public.credencial_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM credencial), false);
+	</select>
+
+	<select id='getCredencialPorId' parameterType='long' resultMap="CredencialResult">
+		SELECT
+			*
+		FROM
+			credencial cre
+		LEFT JOIN
+			sistema sis
+			ON cre.sis_id = sis.id
+		LEFT JOIN
+			usuario usu
+			ON cre.usu_id = usu.id
+		WHERE
+			cre.id = #{id}
+	</select>
+
+	<select id='getListCredencial' resultMap='CredencialResult'>
+		SELECT DISTINCT ON(cre.id)
+			*
+		FROM
+			credencial cre
+		LEFT JOIN
+			sistema sis
+			ON cre.sis_id = sis.id
+		LEFT JOIN
+			usuario usu
+			ON cre.usu_id = usu.id
+		ORDER BY
+			cre.id ASC
+	</select>
+
+	<insert id='insertCredencial' parameterType='Credencial' useGeneratedKeys='true' keyProperty='id'>
+		<selectKey resultType="long" order="AFTER" keyProperty="id">
+			SELECT COALESCE(MAX(id), 1) FROM credencial;
+		</selectKey>
+		INSERT INTO	credencial (
+			sis_id,
+			usu_id,
+			login,
+			senha,
+			observacao
+		) VALUES (
+			#{sistema.id},
+			#{usuario.id},
+			#{login},
+			#{senha},
+			#{observacao}
+		)
+	</insert>
+
+	<update id='updateCredencial' parameterType='Credencial'>
+		UPDATE
+			credencial
+		SET
+			sis_id = #{sistema.id},
+			login = #{login},
+			senha = #{senha},
+			observacao = #{observacao}
+		WHERE
+			id = #{id}
+	</update>
+
+	<delete id='deleteCredencial' parameterType='long'>
+		DELETE FROM
+			credencial
+		WHERE
+			id = #{id}
+	</delete>
+</mapper>

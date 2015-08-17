@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+
+<mapper namespace='br.com.spring.mapper.object.SpringDBMapper'>
+
+    <select id="generateTables">
+        DROP TABLE IF EXISTS credencial_usuario CASCADE;
+        DROP TABLE IF EXISTS credencial CASCADE;
+        DROP TABLE IF EXISTS sistema CASCADE;
+        DROP TABLE IF EXISTS usuario CASCADE;
+<!-- _____________________________________________________________________________________________ -->
+        CREATE TABLE usuario(
+            id            BIGSERIAL              NOT NULL,
+            username      CHARACTER VARYING(16)  NOT NULL,
+            senha         CHARACTER VARYING(128) NOT NULL,
+            nome          CHARACTER VARYING(128) NOT NULL,
+            sobrenome     CHARACTER VARYING(128) NOT NULL,
+            flg_excluido  BOOLEAN                NOT NULL DEFAULT FALSE,
+            CONSTRAINT pk_id_usuario           PRIMARY KEY (id),
+            CONSTRAINT unique_usuario_username UNIQUE (username)
+        );
+<!-- _____________________________________________________________________________________________ -->
+        CREATE TABLE sistema(
+            id           BIGSERIAL              NOT NULL,
+            nome         CHARACTER VARYING(64)  NOT NULL,
+            observacao   CHARACTER VARYING(64),
+            flg_excluido BOOLEAN                NOT NULL DEFAULT FALSE,
+            CONSTRAINT pk_id_sistema PRIMARY KEY (id)
+        );
+<!-- _____________________________________________________________________________________________ -->
+        CREATE TABLE credencial(
+            id           BIGSERIAL              NOT NULL,
+            sis_id       BIGINT                 NOT NULL,
+            usu_id       BIGINT                 NOT NULL,
+            login        CHARACTER VARYING(32)  NOT NULL,
+            senha        CHARACTER VARYING(128) NOT NULL,
+            observacao   CHARACTER VARYING(256),
+            flg_excluido BOOLEAN                NOT NULL DEFAULT FALSE,
+            CONSTRAINT pk_id_credencial         PRIMARY KEY (id),
+            CONSTRAINT fk_sis_cre               FOREIGN KEY (sis_id)
+                REFERENCES sistema (id) MATCH SIMPLE
+                ON UPDATE NO ACTION ON DELETE NO ACTION
+        );
+<!-- _____________________________________________________________________________________________ -->
+        CREATE TABLE credencial_usuario(
+            cre_id BIGINT NOT NULL,
+            usu_id BIGINT NOT NULL,
+            CONSTRAINT pk_id_credencial_usuario  PRIMARY KEY (cre_id, usu_id),
+            CONSTRAINT fk_credencial_usuario_cre FOREIGN KEY (cre_id)
+                REFERENCES credencial (id) MATCH SIMPLE
+                ON UPDATE NO ACTION ON DELETE NO ACTION,
+            CONSTRAINT fk_credencial_usuario_usu FOREIGN KEY (usu_id)
+                REFERENCES usuario (id) MATCH SIMPLE
+                ON UPDATE NO ACTION ON DELETE NO ACTION
+        );
+    </select>
+
+    <select id="deployTriggers">
+        DROP FUNCTION IF EXISTS spring_ondelete() CASCADE;
+<!-- _____________________________________________________________________________________________ -->
+        CREATE OR REPLACE FUNCTION spring_ondelete() RETURNS trigger AS $spring_ondelete$
+         DECLARE
+            resultado int = 0;
+         BEGIN
+            EXECUTE 'UPDATE '||quote_ident(TG_RELNAME)||' SET flg_excluido = TRUE WHERE id = '||OLD.id||';';
+            GET DIAGNOSTICS resultado = ROW_COUNT;
+            RAISE INFO '% Linha(s) afetada(s)', resultado;
+            RETURN NULL;
+         END;
+        $spring_ondelete$ LANGUAGE plpgsql VOLATILE;
+<!-- _____________________________________________________________________________________________ -->
+        CREATE TRIGGER ondelete_usuario BEFORE DELETE ON usuario FOR EACH ROW EXECUTE PROCEDURE spring_ondelete();
+        CREATE TRIGGER ondelete_sistema BEFORE DELETE ON sistema FOR EACH ROW EXECUTE PROCEDURE spring_ondelete();
+        CREATE TRIGGER ondelete_credencial BEFORE DELETE ON credencial FOR EACH ROW EXECUTE PROCEDURE spring_ondelete();
+    </select>
+
+    <select id="populateTables">
+        INSERT INTO
+            usuario(id, username, senha, nome, sobrenome)
+        VALUES
+            (1, 'admin','admin','Administrador','-'),
+            (2, 'usuario','usuario','Usuario','-');
+<!-- _____________________________________________________________________________________________ -->
+        INSERT INTO
+            sistema(id, nome)
+        VALUES
+            (1, 'Sistema');
+<!-- _____________________________________________________________________________________________ -->
+        INSERT INTO
+            credencial(id, sis_id, usu_id, login, senha)
+        VALUES
+            (1, 1, 1, 'admin', 'admin'),
+            (2, 1, 2, 'teste', 'teste');
+<!-- _____________________________________________________________________________________________ -->
+        INSERT INTO
+            credencial_usuario(cre_id, usu_id)
+        VALUES
+            (2, 1),
+            (1, 1),
+            (1, 2);
+    </select>
+</mapper>

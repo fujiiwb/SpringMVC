@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:s="http://www.springframework.org/tags"
+      xmlns:sf="http://www.springframework.org/tags/form"
+      xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+
+	<head>
+		<meta charset="UTF-8">
+		<link href="./resources/css/style.css" rel="stylesheet" type="text/css"/>
+		<title>Usuarios</title>
+	</head>
+	<body>
+		<div align="center">
+			<form action="#" method="get" class="panel">
+				<div align="center" class="header">
+					Usuários Cadastrados
+				</div>
+				<table class="table">
+					<tr>
+						<th class="table_column_header">Nome</th>
+						<th class="table_column_header">Sobrenome</th>
+						<th class="table_column_header">Username</th>
+						<th class="table_column_header">Senha</th>
+					</tr>
+					<c:forEach items="${usuarios}" var="usuario">
+						<tr>
+							<td class="table_column">${usuario.nomePrimeiro}</td>
+							<td class="table_column">${usuario.nomeUltimo}</td>
+							<td class="table_column">${usuario.username}</td>
+							<td class="table_column">${usuario.senha}</td>
+						</tr>
+					</c:forEach>
+					<c:forEach items="#{usuarios}" var="usuario">
+						<tr>
+							<td class="table_column">#{usuario.nomePrimeiro}</td>
+							<td class="table_column">#{usuario.nomeUltimo}</td>
+							<td class="table_column">#{usuario.username}</td>
+							<td class="table_column">#{usuario.senha}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</form>
+		</div>
+	</body>
+</html>

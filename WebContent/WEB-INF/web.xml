@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+		                     http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <display-name>SpringMVC</display-name>
+    <!-- Change to "Production" when you are ready to deploy -->
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <!--<param-value>Production</param-value>-->
+        <param-value>Development</param-value>
+    </context-param>
+    <!-- Welcome page -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <!--<error-page>-->
+    <!--<error-code>404</error-code>-->
+    <!--<location>/404_error.xhtml</location>-->
+    <!--</error-page>-->
+    <!--<error-page>-->
+    <!--<error-code>405</error-code>-->
+    <!--<location>/405_error.xhtml</location>-->
+    <!--</error-page>-->
+    
+    <!--    Responsavel por chamar a classe que inicializa as conexões do Hibernate-->
+    <listener>
+    	<listener-class>br.com.spring.Utilities.PostgreConnection</listener-class>
+    </listener>
+    
+    <!--<listener>-->
+    <!--<listener-class>br.com.issmap.schedule.listeners.SincronizaListener</listener-class>-->
+    <!--</listener>-->
+
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/aviso_sem_sessao.xhtml</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.view.facelets.TagAttributeException</exception-type>
+        <location>/aviso_sem_sessao.xhtml</location>
+    </error-page>
+    <!-- \/   SERVLET SPRING   \/ -->
+    <servlet>
+        <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>
+                /WEB-INF/spring-context.xml
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <!-- /\   SERVLET SPRING   /\ -->
+
+    <!-- \/ SERVLET WEBSERVICE \/ -->
+    <!--<servlet>-->
+    <!--<servlet-name>ServletAdaptor</servlet-name>-->
+    <!--<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>-->
+    <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+    <!--<servlet-name>ServletAdaptor</servlet-name>-->
+    <!--<url-pattern>/ws/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!-- /\ SERVLET WEBSERVICE /\ -->
+</web-app>
