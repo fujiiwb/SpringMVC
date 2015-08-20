@@ -8,11 +8,6 @@
 
 	<web>
 		<link target="/">
-			<dir name="C:/Dropbox/EclipseWorkspace/Spring/target/m2e-wtp/web-resources">
-				<exclude name="/"/>
-			</dir>
-		</link>
-		<link target="/">
 			<dir name="C:/Dropbox/EclipseWorkspace/Spring/WebContent">
 			</dir>
 		</link>
