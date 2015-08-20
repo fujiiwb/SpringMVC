@@ -21,7 +21,7 @@
 						<td class="col-50 pos-1">Senha:</td>
 					</tr>
 					<tr>
-						<td class="col-50 pos-7"><input class="col-99" type="text" maxlength="16" name="username" value="${usuario.username}"/></td>
+						<td class="col-50 pos-7"><input class="col-99" type="text" maxlength="16" id="username" name="username" value="${usuario.username}"/></td>
 						<td class="col-50 pos-7"><input class="col-99" type="text" maxlength="128" name="senha" value="${usuario.senha}"/></td>
 					</tr>
 					<tr>
@@ -58,7 +58,8 @@
 							xhr.setRequestHeader("Accept", "application/json;charset=utf-8");
 							xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 						},
-						success:function(usuario) {
+						success:function(result,status,xhr) {
+							alert(xhr.responseText);
 // 							document.getElementById("message").innerHTML = "Usuario criado com sucesso!";
 						},
 						error:function(jqXHR, textStatus, errorThrown) {

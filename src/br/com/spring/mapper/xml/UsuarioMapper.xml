@@ -33,6 +33,19 @@
 			usuario
 	</select>
 
+	<select id='getListUsuariosPorNome' resultMap='UsuarioResult' parameterType='java.lang.String'>
+		SELECT DISTINCT ON(id)
+			*
+		FROM
+			usuario
+		WHERE
+			flg_excluido IS FALSE
+			AND (
+				UPPER(sobrenome) LIKE UPPER(#{nome})
+				OR UPPER(nome) LIKE UPPER(#{nome})
+			) 
+	</select>
+
 	<insert id='insertUsuario' parameterType='Usuario' useGeneratedKeys='true' keyProperty='id'>
 		<selectKey resultType="long" order="AFTER" keyProperty="id">
 			SELECT COALESCE(MAX(id), 1) FROM usuario;

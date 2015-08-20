@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import br.com.spring.dao.UsuarioDAO;
 import br.com.spring.domain.Usuario;
@@ -46,11 +47,14 @@ public class UsuarioController {
 
     @RequestMapping(value = "/create/do", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public String doCreate(Model model, Usuario usuario) {
+        System.out.println("u: " + usuario);
+        ModelAndView mandv = new ModelAndView();
         try {
             usuarioDAO.sessionOpen();
             usuarioDAO.insertUsuario(usuario);
             model.addAttribute("usuarios", usuarioDAO.getListUsuarios());
             model.addAttribute("message", "Usuario criado com sucesso");
+            mandv.addObject("message", "teste");
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("message", "Erro ao criar o usuario");
@@ -62,20 +66,25 @@ public class UsuarioController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(Model model) {
-        model.addAttribute("usuarios", new ArrayList<>());
-        model.addAttribute("message", "----------------------------------------");
+        List<Usuario> list = new ArrayList<>();
+        Usuario usuario = new Usuario();
+        usuario.setNome("teste");
+        list.add(usuario);
+        model.addAttribute("usuarios", list);
         return getPage("usuario/search");
     }
 
     @RequestMapping(value = "/search/do", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public @ResponseBody List<Usuario> doSearch(Model model, @RequestBody String busca) {
-        System.out.println(busca);
+        ModelAndView mandv = new ModelAndView();
         List<Usuario> usuarios = new ArrayList<>();
         try {
             usuarioDAO.sessionOpen();
-            usuarios = usuarioDAO.getListUsuarios();
+            usuarios = usuarioDAO.getListUsuariosPorNome(busca.replaceAll("\"", ""));
             model.addAttribute("usuarios", usuarios);
+            mandv.addObject("usuarios", usuarios);
             model.addAttribute("message", "Teste");
+            mandv.addObject("message", "Teste");
             System.out.println(usuarios.size());
         } catch (Exception e) {
             model.addAttribute("message", getErrorMessage("na busca"));
@@ -102,6 +111,8 @@ public class UsuarioController {
 
     @RequestMapping(value = "/update/do", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public @ResponseBody Usuario doUpdate(Model model, @RequestBody Usuario usuario) {
+        System.out.println("u: " + usuario);
+        ModelAndView mandv = new ModelAndView();
         try {
             usuarioDAO.sessionOpen();
             usuarioDAO.updateUsuario(usuario);
@@ -112,6 +123,7 @@ public class UsuarioController {
         } finally {
             usuarioDAO.sessionClose();
         }
+        mandv.addObject("message", "teste");
         return usuario;
     }
 }

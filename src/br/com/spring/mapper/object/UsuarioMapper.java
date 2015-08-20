@@ -15,6 +15,8 @@ public interface UsuarioMapper {
 
     public List<Usuario> getListUsuarios() throws DAOException;
 
+    public List<Usuario> getListUsuariosPorNome(String nome) throws DAOException;
+
     public void updateUsuario(Usuario usuario) throws DAOException;
 
     public void deleteUsuario(Long id) throws DAOException;

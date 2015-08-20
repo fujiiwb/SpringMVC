@@ -69,6 +69,16 @@ public class UsuarioDAO extends GenericDAO implements UsuarioMapper {
     }
 
     @Override
+    public List<Usuario> getListUsuariosPorNome(String nome) throws DAOException {
+        try {
+            UsuarioMapper usuarioMapper = session.getMapper(UsuarioMapper.class);
+            return usuarioMapper.getListUsuariosPorNome("%" + nome + "%");
+        } catch (Exception e) {
+            throw new DAOException(e, "getListUsuariosPorNome(" + nome + ")");
+        }
+    }
+
+    @Override
     public void updateUsuario(Usuario usuario) throws DAOException {
         try {
             UsuarioMapper usuarioMapper = session.getMapper(UsuarioMapper.class);

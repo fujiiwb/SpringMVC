@@ -8,7 +8,7 @@
 <html>
 	<t:template>
 		<div align="center">
-			<sf:form id="formTeste" method="post" action="${pageContext.request.contextPath}/teste/ajax/do" class="panel">
+			<sf:form id="formTeste" method="post" action="${pageContext.request.contextPath}/teste/ajax/do">
 				<input id="aaaa" name="aaaa" type="text" value="Teste AAAA"/>
 				<br/>
 				<input id="bbbb" name="bbbb" type="text" value="Teste BBBB"/>
@@ -36,25 +36,25 @@
 							xhr.setRequestHeader("Accept", "application/json");
 							xhr.setRequestHeader("Content-Type", "application/json");
 						},
-						success:function(teste, textStatus, jqXHR) {
+						success:function(result,status,jqXHR) {
 // 							var respContent="<span class='success'>";
 // 							respContent += "Teste editado:";
 // 							respContent += "<br/>teste.aaaa: " + teste.aaaa;
 // 							respContent += "<br/>teste.bbbb: " + teste.bbbb;
 // 							respContent += "</span>";
 // 							$("#message").html(respContent);
-							alert(jqXHR.responseText);
+							console.log("success(result): " + result.responseText);
+							console.log("success(status): " + status.responseText);
+							console.log("success(jqXHR): " + jqXHR.responseText);
 						},
-						error:function(jqXHR, textStatus, errorThrown) {
-							var respContent="";
-							respContent += "<span class='error'>";
-							respContent += "Ocorreu um erro no processamento da requisição!";
-							respContent += "<br/>Error Thrown: " + errorThrown;
-							respContent += "<br/>Text Status: " + textStatus;
-							respContent += "<br/>jqXHR: " + jqXHR;
-							respContent += "<br/>JSON: " + JSON.stringify(testeJson);
-							respContent += "</span>";
-							$("#message").html(respContent);
+						error:function(jqXHR,status,errorThrown) {
+							console.log("error(jqXHR): " + jqXHR.responseText);
+							console.log("error(status): " + status.responseText);
+							console.log("error(errorThrown): " + errorThrown.responseText);
+						},
+						complete:function(jqXHR,status) {
+							console.log("complete(status): " + status.responseText);
+							console.log("complete(jqXHR): " + jqXHR.responseText);
 						}
 					});
 					event.preventDefault();

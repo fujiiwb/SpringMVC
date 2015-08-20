@@ -12,32 +12,36 @@
 				Usuários Cadastrados
 			</header>
 			<table>
-				<tr>
-					<th>Nome</th>
-					<th>Sobrenome</th>
-					<th>Username</th>
-					<th>Senha</th>
-				</tr>
-				<c:forEach items="${usuarios}" var="usuario">
+				<thead>
 					<tr>
-						<td>${usuario.nome}</td>
-						<td>${usuario.sobrenome}</td>
-						<td>${usuario.username}</td>
-						<td>${usuario.senha}</td>
-						<td>
-							<form action="${pageContext.request.contextPath}/usuario/update" method="post">
-								<input name="id" type="hidden" value="${usuario.id}">
-								<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/pencil.png">
-							</form>
-						</td>
-						<td>
-							<form action="${pageContext.request.contextPath}/usuario/desativa" method="post">
-								<input name="id" type="hidden" value="${usuario.id}">
-								<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/gear.png">
-							</form>
-						</td>
+						<td>Nome</td>
+						<td>Sobrenome</td>
+						<td>Username</td>
+						<td>Senha</td>
 					</tr>
-				</c:forEach>
+				</thead>
+				<tbody>
+					<c:forEach items="${usuarios}" var="usuario">
+						<tr>
+							<td>${usuario.nome}</td>
+							<td>${usuario.sobrenome}</td>
+							<td>${usuario.username}</td>
+							<td>${usuario.senha}</td>
+							<td>
+								<form action="${pageContext.request.contextPath}/usuario/update" method="post">
+									<input name="id" type="hidden" value="${usuario.id}">
+									<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/pencil.png">
+								</form>
+							</td>
+							<td>
+								<form action="${pageContext.request.contextPath}/usuario/desativa" method="post">
+									<input name="id" type="hidden" value="${usuario.id}">
+									<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/gear.png">
+								</form>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
 		</div>
 

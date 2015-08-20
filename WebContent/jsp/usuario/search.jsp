@@ -17,36 +17,40 @@
 			<sf:form id="formUsuarioSearch" method="POST" action="${pageContext.request.contextPath}/usuario/search/do">
 				<input type="text" name="busca" id="busca">
 				<input type="submit" value="Buscar">
-			<output>${usuarios}</output>
 			</sf:form>
 			<br/>
+			<input name="usuariosInput" id="usuariosList" type="hidden" value="${usuarios}">
 			<table id="datatable">
-				<tr>
-					<th>Nome</th>
-					<th>Sobrenome</th>
-					<th>Username</th>
-					<th>Senha</th>
-				</tr>
-				<c:forEach items="${usuarios}" var="usuario">
+				<thead>
 					<tr>
-						<td>${usuario.nome}</td>
-						<td>${usuario.sobrenome}</td>
-						<td>${usuario.username}</td>
-						<td>${usuario.senha}</td>
-						<td>
-							<form action="${pageContext.request.contextPath}/usuario/update" method="post">
-								<input name="id" type="hidden" value="${usuario.id}">
-								<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/pencil.png">
-							</form>
-						</td>
-						<td>
-							<form action="${pageContext.request.contextPath}/usuario/desativa" method="post">
-								<input name="id" type="hidden" value="${usuario.id}">
-								<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/gear.png">
-							</form>
-						</td>
+						<th>Nome</th>
+						<th>Sobrenome</th>
+						<th>Username</th>
+						<th>Senha</th>
 					</tr>
-				</c:forEach>
+				</thead>
+				<tbody id="datatable-body">
+					<c:forEach items="${usuarios}" var="usuario">
+						<tr>
+							<td>${usuario.nome}</td>
+							<td>${usuario.sobrenome}</td>
+							<td>${usuario.username}</td>
+							<td>${usuario.senha}</td>
+							<td>
+								<form action="${pageContext.request.contextPath}/usuario/update" method="post">
+									<input name="id" type="hidden" value="${usuario.id}">
+									<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/pencil.png">
+								</form>
+							</td>
+							<td>
+								<form action="${pageContext.request.contextPath}/usuario/desativa" method="post">
+									<input name="id" type="hidden" value="${usuario.id}">
+									<input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/gear.png">
+								</form>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
 		</div>
 
@@ -54,9 +58,10 @@
 			$(document).ready(function(){
 				$('#formUsuarioSearch').submit(function(event){
 					var buscaJson = $('#busca').val();
+					var htmlTable = "";
 
 					$.ajax({
-						url: $("#formUsuarioSearch").attr("action"),
+					    url: $("#formUsuarioSearch").attr("action"),
 						type: $("#formUsuarioSearch").attr("method"),
 						data: JSON.stringify(buscaJson),
 
@@ -64,19 +69,47 @@
 							xhr.setRequestHeader("Accept", "application/json;charset=utf-8");
 							xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 						},
-						success:function(usuarios) {
-// 							document.getElementById("message").innerHTML = "Usuario criado com sucesso! " + usuarios[0].nome;
-// 							$("#datatable").html(usuarios);
+						success:function(result,status,xhr) {
+							var a = JSON.parse(xhr.responseText);
+							a.forEach(function(object,index,list) {
+								htmlTable += "<tr>";
+								htmlTable += "    <td>" + object.nome + "</td>";
+								htmlTable += "    <td>" + object.sobrenome + "</td>";
+								htmlTable += "    <td>" + object.username + "</td>";
+								htmlTable += "    <td>" + object.senha + "</td>";
+								htmlTable += "    <td>";
+								htmlTable += '        <form action="${pageContext.request.contextPath}/usuario/update" method="post">';
+								htmlTable += '            <input name="id" type="hidden" value="' + object.id + '">';
+								htmlTable += '            <input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/pencil.png">';
+								htmlTable += '        </form>';
+								htmlTable += "    </td>";
+								htmlTable += "    <td>";
+								htmlTable += '        <form action="${pageContext.request.contextPath}/usuario/desativa" method="post">';
+								htmlTable += '            <input name="id" type="hidden" value="' + object.id + '">';
+								htmlTable += '            <input type="image" class="icon pos-5" src="${pageContext.request.contextPath}/resources/img/gear.png">';
+								htmlTable += '        </form>';
+								htmlTable += "    </td>";
+								htmlTable += "</tr>";
+							});
 						},
-						error:function(jqXHR, textStatus, errorThrown) {
+						error:function(jqXHR, status, errorThrown) {
 							var respContent="";
 							respContent += "<span class='error'>Ocorreu um erro no processamento da requisição:";
 							respContent += "<br/>Error Thrown: " + errorThrown;
-							respContent += "<br/>Text Status: " + textStatus;
+							respContent += "<br/>Status: " + status;
 							respContent += "<br/>jqXHR: " + jqXHR;
 							respContent += "<br/>JSON: " + JSON.stringify(buscaJson) + "</span>";
 							$("#divMessage").html(respContent);
+						},
+						complete:function(jqXHR,status) {
+							document.getElementById('datatable-body').innerHTML = htmlTable;
+// 							console.log("complete(status): " + status.responseText);
+// 							console.log("complete(jqXHR): " + jqXHR.responseText);
 						}
+					}).done(function(result,status,xhr){
+// 							console.log("done(result): " + result.responseText);
+// 							console.log("done(status): " + status.responseText);
+// 							console.log("done(xhr): " + xhr.responseText);
 					});
 					event.preventDefault();
 				});

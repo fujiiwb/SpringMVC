@@ -8,7 +8,7 @@
 <html>
 	<t:template>
 		<div align="center">
-			<sf:form id="formUsuarioUpdate" method="POST" action="${pageContext.request.contextPath}/usuario/update/do" class="panel">
+			<sf:form id="formUsuarioUpdate" method="POST" action="${pageContext.request.contextPath}/usuario/update/do">
 				<div align="center" class="header">
 					Adicionar Usuário
 				</div>
@@ -59,15 +59,17 @@
 							xhr.setRequestHeader("Accept", "application/json;charset=utf-8");
 							xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 						},
-						success:function(usuario) {
+						success:function(result,status,jqXHR) {
 // 							document.getElementById("message").innerHTML = "Usuario editado com sucesso!";
-							alert(usuario.responsetext);
+							console.log("result: " + result.responseText);
+							console.log("status: " + status.responseText);
+							console.log("jqXHR: " + jqXHR.responseText);
 						},
-						error:function(jqXHR, textStatus, errorThrown) {
+						error:function(jqXHR, status, errorThrown) {
 							var respContent="";
 							respContent += "<span class='error'>Ocorreu um erro no processamento da requisição:";
 							respContent += "<br/>Error Thrown: " + errorThrown;
-							respContent += "<br/>Text Status: " + textStatus;
+							respContent += "<br/>Text Status: " + status;
 							respContent += "<br/>jqXHR: " + jqXHR;
 							respContent += "<br/>JSON: " + JSON.stringify(userJson) + "</span>";
 							$("#divMessage").html(respContent);
