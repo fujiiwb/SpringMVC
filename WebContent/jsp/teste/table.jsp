@@ -7,15 +7,24 @@
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
-	<head>
-		<title>${title}</title>
-	</head>
+<head>
+</head>
+<body>
 	<t:template>
-		<form action="${redirect}">
-			<br/>
-			<output style="font-weight: bold">${mensagem}</output>
-			<br/><br/>
-			<button autofocus="autofocus">Retornar</button>
-		</form>
+		<x:table list="${usuarios}">
+			<x:column headerText="Iterator">
+				${iterator.index}
+			</x:column>
+			<x:column headerText="Nome">
+				${listObject.nome}
+			</x:column>
+			<x:column headerText="Sobrenome">
+ 				${listObject.sobrenome}
+			</x:column>
+			<x:column headerText="Username">
+ 				${listObject.username}
+			</x:column>
+		</x:table>
 	</t:template>
+</body>
 </html>

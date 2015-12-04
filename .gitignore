@@ -45,3 +45,6 @@ target/
 build/
 .settings/
 src/rebel.xml
+.classpath
+.gitattributes
+.project

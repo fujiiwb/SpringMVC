@@ -8,6 +8,7 @@
 		<link href="<%=request.getContextPath()%>/resources/css/template.css" rel="stylesheet"/>
 		<link href="<%=request.getContextPath()%>/resources/css/style.css" rel="stylesheet"/>
 		<script src="<%=request.getContextPath()%>/resources/js/jquery-1.11.3.min.js"></script>
+		<title>Página Inicial - HTML5</title>
 	</head>
 	<body>
 		<div id="horizontalmenu" align="left">
@@ -88,6 +89,12 @@
 					<ul>
 						<li>
 							<a href="${pageContext.request.contextPath}/teste/ajax">AJAX</a>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/teste/table">Table</a>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/teste/info">Info</a>
 						</li>
 					</ul>
 				</li>

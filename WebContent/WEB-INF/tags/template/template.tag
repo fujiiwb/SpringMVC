@@ -1,5 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="x"   tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="t"   tagdir="/WEB-INF/tags/template"%>
 <%@attribute name="username" required="false"%>
 <html>
 	<body>
